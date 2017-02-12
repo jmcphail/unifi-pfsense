@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * unifi.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2008 Mark J Crane
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>unifisettings</name>
+	<title>Services: UniFi Settings</title>
+	<include_file>/usr/local/pkg/unifi.inc</include_file>
+	<aftersaveredirect>/pkg.php?xml=unifi.xml</aftersaveredirect>
+	<addedit_string>[unifi] Successfully created/modified unifi.</addedit_string>
+	<delete_string>[unifi] Successfully deleted custom unifi.</delete_string>
+	<menu>
+		<name>UniFi</name>
+		<section>Services</section>
+		<configfile>unifi.xml</configfile>
+		<url>/pkg.php?xml=unifi.xml</url>
+	</menu>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Command</fielddescr>
+			<fieldname>cmd</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Shellcmd Type</fielddescr>
+			<fieldname>cmdtype</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	<addtext>Add a new unifi entry</addtext>
+	<edittext>Edit this unifi entry</edittext>
+	<deletetext>Delete this unifi entry</deletetext>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<type>listtopic</type>
+			<fieldname>none</fieldname>
+			<name>UniFi Configuration</name>
+		</field>
+		<field>
+			<fielddescr>Command</fielddescr>
+			<fieldname>cmd</fieldname>
+			<type>input</type>
+			<size>60</size>
+			<description>Enter the command to run.</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Shellcmd Type</fielddescr>
+			<fieldname>cmdtype</fieldname>
+			<type>select</type>
+				<options>
+					<option>
+						<name>shellcmd</name>
+						<value>shellcmd</value>
+					</option>
+					<option>
+						<name>earlyshellcmd</name>
+						<value>earlyshellcmd</value>
+					</option>
+					<option>
+						<name>afterfilterchangeshellcmd</name>
+						<value>afterfilterchangeshellcmd</value>
+					</option>
+					<option>
+						<name>disabled</name>
+						<value>disabled</value>
+					</option>
+				</options>
+			<description>
+				<![CDATA[
+				Choose the shellcmd type.<br /><br />
+				<strong>shellcmd</strong> will run the command specified towards the end of the boot process.<br />
+				<strong>earlyshellcmd</strong> will run the command specified at the beginning of the boot process.<br />
+				<strong>afterfilterchangeshellcmd</strong> will run after each filter_configure() call. 
+				See /etc/inc/filter.inc source code for "documentation".
+				<span class="errmsg">N.B.: Only one entry of this type can be configured!</span><br />
+				<strong>disabled</strong> will save the command in package configuration but it will NOT run on boot.<br /><br />
+				See <a href="https://doc.pfsense.org/index.php/Executing_commands_at_boot_time">Executing commands at boot time</a> for detailed explanation.
+				]]>
+			</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter a description for this command.</description>
+			<type>input</type>
+			<typehint>(This is for your reference only.)</typehint>
+			<size>60</size>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		shellcmd_import_config();
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		shellcmd_sync_package();
+	</custom_php_resync_config_command>
+	<custom_delete_php_command>
+		shellcmd_delete_php_command();
+	</custom_delete_php_command>
+	<custom_php_validation_command>
+		shellcmd_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
+

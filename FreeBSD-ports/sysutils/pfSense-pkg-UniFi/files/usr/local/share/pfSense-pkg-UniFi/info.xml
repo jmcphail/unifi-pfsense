@@ -1,0 +1,10 @@
+
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>UniFi Controller</name>
+		<descr><![CDATA[Install and monitor the Ubiquiti UniFi Controller software.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>unifi.xml</configurationfile>
+	</package>
+</pfsensepkgs>
